@@ -49,7 +49,7 @@ $clinicas = $buscarClinica->buscarClinicas();
                     <option value="">SELECCIONE</option>
                     <?php foreach ($clinicas as $clinica) : ?>
                         <option value="<?= $clinica['clinica_id'] ?>">
-                            <?= $clinica['cit_clinica_id'] ?>
+                            <?= $clinica['clin_nombre'] ?>
                         </option>
                     <?php endforeach; ?>
                 </select>

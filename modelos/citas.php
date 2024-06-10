@@ -29,8 +29,8 @@ class citas extends conexion
   // METODO PARA INSERTAR
   public function guardar()
   {
-    $sql = "INSERT into citas (cit_fecha, cit_clinica_id, cit_paciente_id) values ('$this->cit_fecha', '$this->cit_clinica_id', '$this->cit_paciente_id')";
- 
+    $sql = "INSERT into cita (cit_fecha, cit_clinica_id, cit_paciente_id) values ('$this->cit_fecha', '$this->cit_clinica_id', '$this->cit_paciente_id')";
+
 
     $resultado = $this->ejecutar($sql);
     
