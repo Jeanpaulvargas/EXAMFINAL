@@ -46,7 +46,8 @@ class clinicas extends conexion
  public function buscar(...$columnas)
  {
    $colums = count($columnas) > 0 ? implode(',', $columnas) : '*';
-   $sql = "SELECT $colums FROM clinicas where clinica_situacion = 1 ";
+   $sql = "SELECT $colums FROM clinicas
+   inner join medico on clin_medico_id = medico_id where clinica_situacion = 1 ";
 
 
    if ($this->clin_nombre != '') {
@@ -56,6 +57,7 @@ class clinicas extends conexion
      $sql .= " AND clin_sala like '%$this->clin_sala%' ";
    }
 
+  
    $resultado = self::servir($sql);
    return $resultado;
  }

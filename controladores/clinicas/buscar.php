@@ -53,7 +53,8 @@
                     <tr>
                         <th>No.</th>
                         <th>Nombre Clinica</th>
-                        <th>Ubicacion</th>
+                        <th>Medico Asignado</th>
+                        <th>Sala</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,6 +63,7 @@
                             <tr>
                                 <td><?= $key + 1?></td>
                                 <td><?= $clinica['clin_nombre'] ?></td>
+                                <td><?= $clinica['medi_nombres'] ?></td>
                                 <td><?= $clinica['clin_sala'] ?></td>
                                 <td class="text-center">
                                 <div class="dropdown">

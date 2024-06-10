@@ -31,7 +31,7 @@ $medico = $buscarMedico->buscarMedicos()
                 <option value="">SELECCIONE</option>
                     <?php foreach ($medico as $medico) : ?>
                         <option value="<?= $medico['medico_id'] ?>">
-                            <?= $medico['med_especialidad'] ."" ?>
+                            <?= $medico['medi_nombres'] ."" ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
