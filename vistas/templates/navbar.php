@@ -33,6 +33,15 @@
             <li><a class="dropdown-item" href="../medicos/buscar.php"><i class="bi bi-search me-2"></i>BUSCAR</a></li>
           </ul>
         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-fill me-2"></i>CLINICAS
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="../../vistas/clinicas/index.php"><i class="bi bi-plus-circle me-2"></i>CREAR</a></li>
+            <li><a class="dropdown-item" href="../clinicas/buscar.php"><i class="bi bi-search me-2"></i>BUSCAR</a></li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>
