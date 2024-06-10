@@ -31,7 +31,7 @@ class Pacientes extends conexion
   // METODO PARA INSERTAR
   public function guardar()
   {
-    $sql = "INSERT into Paciente (paci_nombres, paci_apellidos, paci_dpi, paci_sexo, paci_referido) values ('$this->paci_nombres','$this->paci_apellidos', '$this->paci_dpi', '$this->paci_sexo', '$this->paci_referido')";
+    $sql = "INSERT into paciente (paci_nombres, paci_apellidos, paci_dpi, paci_sexo, paci_referido) values ('$this->paci_nombres','$this->paci_apellidos', '$this->paci_dpi', '$this->paci_sexo', '$this->paci_referido')";
     $resultado = $this->ejecutar($sql);
     return $resultado;
   }
@@ -50,7 +50,7 @@ class Pacientes extends conexion
   public function buscar(...$columnas)
   {
     $colums = count($columnas) > 0 ? implode(',', $columnas) : '*';
-    $sql = "SELECT $colums FROM pacientes where paciente_situacion = 1 ";
+    $sql = "SELECT $colums FROM paciente where paciente_situacion = 1 ";
 
 
     if ($this->paci_nombres != '') {
