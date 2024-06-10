@@ -82,7 +82,7 @@ class clinicas extends conexion
 
  public function modificar()
   {
-    $sql = "UPDATE clinicas SET clin_nombre = '$this->clin_nombre', clin_sala = '$this->clin_sala', WHERE clinica_id = $this->clinica_id ";
+    $sql = "UPDATE clinicas SET clin_nombre = '$this->clin_nombre', clin_sala = '$this->clin_sala' WHERE clinica_id = $this->clinica_id ";
     $resultado = $this->ejecutar($sql);
     return $resultado;
   }
