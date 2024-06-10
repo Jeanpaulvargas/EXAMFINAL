@@ -88,13 +88,13 @@ class Citas extends conexion
     return $resultado;
   }
 
-  public function eliminar()
-  {
-    $sql = "UPDATE citas SET cit_situacion = 0 where cita_id = $this->cita_id";
-
+  public function eliminar(){
+    $sql = "UPDATE cita SET cit_situacion = 0 where cita_id = $this->cita_id";
+    
     $resultado = self::ejecutar($sql);
     return $resultado;
-  }
+}
+
 
   public function busqueda()
   {
