@@ -1,8 +1,5 @@
 <?php
 
-//  ini_set('display_errors', 1);
-//  ini_set('display_startup_errors', 1);
-//  error_reporting(E_ALL);
 
 require '../../modelos/citas.php';
 
@@ -27,7 +24,7 @@ if ($_POST['cit_paciente_id'] == '' || $_POST['cit_fecha'] == '' || $_POST['cit_
         $citas = new citas($_POST);
         $guardar = $citas->guardar();
         $resultado = [
-            'mensaje' => 'CITA INSERTADO CORRECTAMENTE',
+            'mensaje' => 'CITA INSERTADA CORRECTAMENTE',
             'codigo' => 1
         ];
     } catch (PDOException $pe) {

@@ -60,7 +60,7 @@ $fechaSolo = !empty($fechaCita) ? date("Y-m-d", strtotime($fechaCita)) : '';
             background-color: #f8f9fa;
         }
         .highlight-header {
-            background-color: #e9ecef;
+           
             border: 2px solid #007bff;
             border-radius: 10px;
             padding: 10px;
