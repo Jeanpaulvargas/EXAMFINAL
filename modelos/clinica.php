@@ -56,7 +56,6 @@ class clinicas extends conexion
    if ($this->clin_sala != '') {
      $sql .= " AND clin_sala like '%$this->clin_sala%' ";
    }
-
   
    $resultado = self::servir($sql);
    return $resultado;

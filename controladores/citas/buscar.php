@@ -1,93 +1,100 @@
 <?php
-    // ini_set('display_errors', '1');
-    // ini_set('display_startup_errors', '1');
-    // error_reporting(E_ALL);
+//  ini_set('display_errors', 1);
+//  ini_set('display_startup_errors', 1);
+//  error_reporting(E_ALL);
 
-    require '../../modelos/citas.php';
+require_once '../../modelos/citas.php';
 
-    // consulta
-    try {
-        // var_dump($_GET);
-        $_GET['cita_nombres'] = htmlspecialchars( $_GET['cita_nombres']);
-        $_GET['cita_fecha'] = date('Y-m-d H:i', strtotime($_POST['cita_fecha']));
-        $_GET['cita_clinica'] = htmlspecialchars( $_GET['cita_clinica']);
-       
+if (isset($_GET['cit_fecha']) && !empty($_GET['cit_fecha'])) {
+    $_GET['cit_fecha'] = date("Y-m-d H:i", strtotime($_GET['cit_fecha']));
+    $fechaCita = $_GET['cit_fecha'];
+} else {
+    $fechaCita = '';
+}
 
-        $objcitas = new Citas($_GET);
-        $citas = $objcita->buscar();
-        $resultado = [
-            'mensaje' => 'Datos encontrados',
-            'datos' => $citas,
-            'codigo' => 1
-        ];
-        // var_dump($clinicas);
-        
-    } catch (Exception $e) {
-        $resultado = [
-            'mensaje' => 'OCURRIO UN ERROR EN LA EJECUCIÓN',
-            'detalle' => $e->getMessage(),
-            'codigo' => 0
-        ];
-    }       
+try {
+    $cita = new Citas();
+    $citas = $cita->buscarPorFecha($fechaCita);
+} catch (PDOException $e) {
+    $error = $e->getMessage();
+} catch (Exception $e2) {
+    $error = $e2->getMessage();
+}
 
 
-    $alertas = ['danger', 'success', 'warning'];
+$citasPorClinica = [];
+if (isset($citas) && count($citas) > 0) {
+    foreach ($citas as $cita) {
+        $clinica = $cita['clin_nombre'] ?? 'Sin Clínica';
+        if (!isset($citasPorClinica[$clinica])) {
+            $citasPorClinica[$clinica] = [];
+        }
+        $citasPorClinica[$clinica][] = $cita;
+    }
+}
 
-    
-    include_once '../../vistas/templates/header.php'; ?>
 
-    <div class="row mb-4 justify-content-center">
-        <div class="col-lg-6 alert alert-<?=$alertas[$resultado['codigo']] ?>" role="alert">
-            <?= $resultado['mensaje'] ?>
+$fechaSolo = date("Y-m-d", strtotime($fechaCita));
+?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <title>Buscar citas</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+            <h2 class="mt-5">
+                    <?= !empty($fechaCita) ? "Citas para el día de hoy: " . htmlspecialchars($fechaSolo) : "Citas registradas" ?>
+                </h2>
+
+                <?php if (isset($citas) && count($citas) > 0) : ?>
+                    <?php foreach ($citasPorClinica as $clinica => $citas) : ?>
+                        <h3 class="mt-4"><?= htmlspecialchars($clinica) ?></h3>
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>NO.</th>
+                                    <th>PACIENTE</th>
+                                    <th>DPI</th>
+                                    <th>MÉDICO</th>
+                                    <th>FECHA CITA</th>
+                                    <th>REFERIDO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($citas as $key => $cita) : ?>
+                                    <tr>
+                                        <td><?= $key + 1 ?></td>
+                                        <td><?= htmlspecialchars($cita['paci_nombres'] ?? '') ?></td>
+                                        <td><?= htmlspecialchars($cita['paci_dpi'] ?? '') ?></td>
+                                        <td><?= htmlspecialchars($cita['medi_nombres'] ?? '') ?></td>
+                                        <td><?= htmlspecialchars($cita['cit_fecha'] ?? '') ?></td>
+                                        <td><?= htmlspecialchars($cita['paci_referido'] ?? '') ?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    <?php endforeach ?>
+                <?php else : ?>
+                    <div class="alert alert-warning" role="alert">
+                        NO EXISTEN REGISTROS
+                    </div>
+                <?php endif ?>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+            <div class="col-lg-4">
+                <a href="../../vistas/citas/buscar.php" class="btn btn-info w-100">Regresar a la búsqueda</a>
+            </div>
         </div>
     </div>
-    <div class="row mb-4 justify-content-center">
-        <div class="col-lg-6">
-            <a href="../../vistas/citas/index.php" class="btn btn-primary w-100">Volver al formulario de busqueda</a>
-        </div>
-    </div>
-    <h1 class="text-center">Listado de Clinicas</h1>
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Nombre Clinica</th>
-                        <th>Ubicacion</th>
-                        <th>Telefono</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if($resultado['codigo'] == 1 && count($clinicas) > 0) : ?>
-                        <?php foreach ($clinicas as $key => $clinica) : ?>
-                            <tr>
-                                <td><?= $key + 1?></td>
-                                <td><?= $clinica['cli_nombre_clinica'] ?></td>
-                                <td><?= $clinica['cli_ubicacion'] ?></td>
-                                <td><?= $clinica['cli_telefono'] ?></td>
-                                <td class="text-center">
-                                <div class="dropdown">
-                                    <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Acciones
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="../../vistas/clinicas/modificar.php?clinica_id=<?= base64_encode($clinica['clinica_id'])?>"><i class="bi bi-pencil-square me-2"></i>Modificar</a></li>
-                                        <li><a class="dropdown-item" href="../../controladores/clinicas/eliminar.php?clinica_id=<?= base64_encode($clinica['clinica_id'])?>"><i class="bi bi-trash me-2"></i>Eliminar</a></li>
-                                    </ul>
-                                </div>
-
-                                </td>
-                            </tr>
-                        <?php endforeach ?>
-                    <?php else : ?>
-                        <tr>
-                            <td colspan="4">No hay clinicas registrados</td>
-                        </tr>  
-                    <?php endif ?>
-                </tbody>
-                        
-            </table>
-        </div>        
-    </div>        
-<?php include_once '../../vistas/templates/footer.php'; ?>  
+</body>
+</html>
